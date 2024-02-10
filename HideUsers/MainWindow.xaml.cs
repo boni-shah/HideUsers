@@ -7,9 +7,6 @@ using System.Windows;
 
 namespace HideUsers
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public IList<string> UserList = new List<string>();
@@ -50,14 +47,22 @@ namespace HideUsers
 
         public void HideUser(string username)
         {
-            try {
+            try
+            {
                 RegistryKey UserKey = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList");
                 UserKey.SetValue(username, "0", RegistryValueKind.DWord);
                 MessageBox.Show("The selected user has been hidden.", "Operation Successful");
             }
-            catch(Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show("Failed to hide selected user. Error Details: " + ex.Message, "Operation Failed");
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var userName = UserCombo.SelectedValue.ToString();
+            HideUser(userName); 
         }
     }
 }
